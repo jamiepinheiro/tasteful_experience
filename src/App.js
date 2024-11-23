@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import useWebSocket from "react-use-websocket";
 
 const App = () => {
   const [otherUser, setOtherUser] = useState(null);
   const [unmatched, setUnmatched] = useState(false);
-  const WS_URL = "ws://localhost:8080";
+  // const WS_URL = "ws://localhost:8080";
+  const WS_URL =
+    "wss://tasteful-experience-server-pzsdi.ondigitalocean.app:443";
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     WS_URL,
     {
@@ -23,7 +25,7 @@ const App = () => {
       };
       sendJsonMessage(cursorPosition);
     };
-  }, [readyState]);
+  }, [readyState, sendJsonMessage]);
 
   function removePreviousCursor() {
     const previousCursor = document.querySelector(".custom-cursor");
@@ -61,6 +63,9 @@ const App = () => {
           removePreviousCursor();
           setOtherUser(null);
           setUnmatched(true);
+          break;
+        default:
+          console.log("Unknown event type:", data.event);
           break;
       }
     }
