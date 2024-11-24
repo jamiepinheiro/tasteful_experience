@@ -35,10 +35,18 @@ function match_users() {
     const user2 = unmatched_users.pop();
     const preferences = [user1.preferences, user2.preferences];
     user1.send(
-      JSON.stringify({ event: "match", id: user2.id, preferences: preferences })
+      JSON.stringify({
+        event: "match",
+        otherUser: user2.name,
+        preferences: preferences
+      })
     );
     user2.send(
-      JSON.stringify({ event: "match", id: user1.id, preferences: preferences })
+      JSON.stringify({
+        event: "match",
+        otherUser: user1.name,
+        preferences: preferences
+      })
     );
     session = new Session(user1, user2);
     sessions.push(session);
@@ -67,6 +75,7 @@ wss.on("connection", ws => {
         }
         break;
       case "set_preferences":
+        ws.name = data.name;
         ws.preferences = data.preferences;
         unmatched_users.push(ws);
         match_users();

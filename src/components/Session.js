@@ -23,9 +23,17 @@ const Session = () => {
 
   useEffect(() => {
     if (readyState === 1) {
-      const preferences = Object.fromEntries(searchParams.entries());
-      console.log("preferences", preferences);
-      sendJsonMessage({ event: "set_preferences", preferences });
+      const params = Object.fromEntries(searchParams.entries());
+      console.log("params", params);
+      sendJsonMessage({
+        event: "set_preferences",
+        preferences: {
+          vibe: params.vibe,
+          inspiration: params.inspiration,
+          flavor: params.flavor
+        },
+        name: params.name
+      });
     }
     document.onmousemove = e => {
       const { clientX, clientY } = e;
@@ -49,7 +57,11 @@ const Session = () => {
       let data = lastJsonMessage;
       switch (data.event) {
         case "match":
-          setSession({ otherUser: data.id, preferences: data.preferences });
+          console.log("match", data);
+          setSession({
+            otherUser: data.otherUser,
+            preferences: data.preferences
+          });
           break;
         case "cursor_move":
           removePreviousCursor();
@@ -175,7 +187,7 @@ const Session = () => {
             right: "20px"
           }}
         >
-          <i>Sharing an experience with User {session.otherUser}</i>
+          <i>You're sharing an experience with {session.otherUser}</i>
         </div>
       )}
 
