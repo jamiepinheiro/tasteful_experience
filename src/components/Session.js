@@ -165,7 +165,6 @@ const Session = () => {
     >
       <h1 style={{ fontSize: "2rem" }}>
         {!unmatched && !session && "Searching for partner..."}
-        {unmatched && "Partner has left :("}
       </h1>
 
       {session && (
@@ -177,6 +176,26 @@ const Session = () => {
           }}
         >
           <i>Sharing an experience with User {session.otherUser}</i>
+        </div>
+      )}
+
+      {unmatched && (
+        <div>
+          <p>Partner has left :(</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: "0.5rem 1rem",
+              borderRadius: "4px",
+              border: "none",
+              background: "#007bff",
+              color: "white",
+              cursor: "pointer",
+              marginTop: "1rem"
+            }}
+          >
+            Start Over?
+          </button>
         </div>
       )}
     </div>
