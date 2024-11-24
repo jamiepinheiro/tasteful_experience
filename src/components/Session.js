@@ -154,13 +154,30 @@ const Session = () => {
     }
   }, [session]);
 
+  let audio = null;
   useEffect(() => {
     if (preset) {
       setBackground(`url(${process.env.PUBLIC_URL}/img/${preset}.svg)`);
-      const audio = new Audio(`${process.env.PUBLIC_URL}/music/${preset}.mp3`);
+      audio = new Audio(`${process.env.PUBLIC_URL}/music/${preset}.mp3`);
       audio.loop = true;
-      audio.play();
+      try {
+        document.addEventListener(
+          "click",
+          () => {
+            audio.play().catch(error => {
+              console.error("Error playing audio:", error);
+            });
+          },
+          { once: true }
+        );
+      } catch (error) {
+        console.error("Error playing audio:", error);
+      }
     } else {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
       setBackground("none");
     }
   }, [preset]);
