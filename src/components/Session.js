@@ -11,7 +11,6 @@ const Session = () => {
   const [expiresIn, setExpiresIn] = useState(null);
   const [over, setOver] = useState(false);
   const [apiKey, setApiKey] = useState(null);
-  const [showBackground, setShowBackground] = useState(false);
 
   const navigate = useNavigate();
   const WS_URL =
@@ -72,18 +71,19 @@ const Session = () => {
           break;
         case "cursor_move":
           removePreviousCursor();
-          const cursor = document.createElement("div");
+          const cursor = document.createElement("img");
           cursor.className = "custom-cursor";
-          cursor.style.width = "20px";
-          cursor.style.height = "20px";
-          cursor.style.border = "1.5px solid black";
-          cursor.style.borderRadius = "50% 50% 50% 50% / 40% 40% 60% 60%";
-          cursor.style.backgroundColor = "white";
+          cursor.src = "/img/cursor.svg";
+          cursor.style.width = "30px";
+          cursor.style.height = "30px";
           cursor.style.position = "absolute";
-          cursor.style.left = `${data.cursor.x}px`;
-          cursor.style.top = `${data.cursor.y}px`;
-          cursor.style.transform = "rotate(-45deg)";
-          cursor.style.boxShadow = "0px 0px 2px rgba(0,0,0,0.5)";
+          cursor.style.left = `calc(98vw * ${
+            data.cursor.x / window.innerWidth
+          })`;
+          cursor.style.top = `calc(98vh * ${
+            data.cursor.y / window.innerHeight
+          })`;
+          cursor.style.transform = "translate(-50%, -50%)";
           document.body.appendChild(cursor);
           break;
         case "unmatched":
@@ -161,29 +161,38 @@ const Session = () => {
     }
   }, [session]);
 
-  let audio = null;
+  const [audio, setAudio] = useState(null);
   useEffect(() => {
     if (preset) {
       setBackground(`url(${process.env.PUBLIC_URL}/img/${preset}.svg)`);
-      audio = new Audio(`${process.env.PUBLIC_URL}/music/${preset}.mp3`);
-      audio.loop = true;
-      try {
-        document.addEventListener(
-          "click",
-          () => {
-            audio.play().catch(error => {
-              console.error("Error playing audio:", error);
-            });
-          },
-          { once: true }
+      if (!audio) {
+        console.log("setting audio");
+        const newAudio = new Audio(
+          `${process.env.PUBLIC_URL}/music/${preset}.mp3`
         );
-      } catch (error) {
-        console.error("Error playing audio:", error);
+        setAudio(newAudio);
+        newAudio.loop = true;
+        try {
+          console.log("adding click listener");
+          document.addEventListener(
+            "click",
+            () => {
+              newAudio.play().catch(error => {
+                console.error("Error playing audio:", error);
+              });
+            },
+            { once: true }
+          );
+        } catch (error) {
+          console.error("Error playing audio:", error);
+        }
       }
     } else {
       if (audio) {
+        console.log("pausing audio");
         audio.pause();
         audio.currentTime = 0;
+        setAudio(null);
       }
       setBackground("none");
     }
@@ -246,13 +255,20 @@ const Session = () => {
         <div
           style={{
             position: "absolute",
-            bottom: "20px",
-            right: "20px"
+            top: "10%", // Changed top position to 10px
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#eeeeee",
+            padding: "20px",
+            borderRadius: "5px",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+            textAlign: "center",
+            fontSize: "1.5rem"
           }}
         >
           <i>You're sharing an experience with {session.otherUser}</i>
           <br />
-          <i>Expires in {expiresIn}</i>
+          <i>{expiresIn || "..."}</i>
         </div>
       )}
 
@@ -267,7 +283,7 @@ const Session = () => {
             fontSize: "1.5rem"
           }}
         >
-          {unmatched && <p>Partner has left :(</p>}
+          {unmatched && !over && <p>Partner has left :(</p>}
           {over && <p>Thanks for taking part :)</p>}
           <button
             onClick={startOver}
