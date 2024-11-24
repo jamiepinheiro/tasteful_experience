@@ -88,7 +88,10 @@ const Home = () => {
       if (messages.length > 1) {
         const preferences = JSON.parse(messages[1]);
         setTimeout(
-          () => navigate("/session?" + new URLSearchParams(preferences)),
+          () =>
+            navigate(
+              "/session?" + new URLSearchParams({ apiKey, ...preferences })
+            ),
           3000
         );
       }
@@ -118,7 +121,8 @@ const Home = () => {
         style={{
           width: "100%",
           maxWidth: "600px",
-          height: "calc(100vh - 120px)",
+          height: "50vh",
+          margin: "auto",
           border: "1px solid #ccc",
           borderRadius: "8px",
           overflow: "auto",
@@ -136,8 +140,8 @@ const Home = () => {
           >
             <div
               style={{
-                background: msg.role === "user" ? "#007bff" : "#e9ecef",
-                color: msg.role === "user" ? "white" : "black",
+                background: "#e9ecef",
+                color: "2e2e2e",
                 padding: "0.5rem 1rem",
                 borderRadius: "20px",
                 display: "inline-block",
@@ -156,7 +160,8 @@ const Home = () => {
         style={{
           width: "100%",
           maxWidth: "600px",
-          padding: "1vh 0"
+          padding: "1vh 0",
+          marginTop: "0"
         }}
       >
         <div style={{ display: "flex", gap: "1rem" }}>
@@ -178,7 +183,7 @@ const Home = () => {
               padding: "0.5rem 1rem",
               borderRadius: "4px",
               border: "none",
-              background: "#007bff",
+              background: "#2e2e2e",
               color: "white",
               cursor: "pointer"
             }}

@@ -14,7 +14,7 @@ class Session {
     this.user1 = user1;
     this.user2 = user2;
     this.active = true;
-    this.expires = Date.now() + 10000;
+    this.expires = Date.now() + 1000 * 60 * 8;
   }
 
   getOtherUser(user) {
