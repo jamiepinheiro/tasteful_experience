@@ -157,6 +157,9 @@ const Session = () => {
   useEffect(() => {
     if (preset) {
       setBackground(`url(${process.env.PUBLIC_URL}/img/${preset}.svg)`);
+      const audio = new Audio(`${process.env.PUBLIC_URL}/music/${preset}.mp3`);
+      audio.loop = true;
+      audio.play();
     } else {
       setBackground("none");
     }
