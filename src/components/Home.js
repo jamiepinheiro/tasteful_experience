@@ -27,7 +27,9 @@ const Home = () => {
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [apiKey, setApiKey] = useState(
-    process.env.REACT_APP_OPENAI_API_KEY || null
+    process.env.REACT_APP_OPENAI_API_KEY ||
+      new URLSearchParams(window.location.search).get("apiKey") ||
+      null
   );
   const [openAI, setOpenAI] = useState(null);
   const messagesEndRef = useRef(null);
