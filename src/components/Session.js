@@ -8,6 +8,8 @@ const Session = () => {
   const [unmatched, setUnmatched] = useState(false);
   const [preset, setPreset] = useState(null);
   const [background, setBackground] = useState(null);
+  const [expiresIn, setExpiresIn] = useState(null);
+  const [over, setOver] = useState(false);
 
   const WS_URL =
     process.env.REACT_APP_WS_URL ||
@@ -60,7 +62,8 @@ const Session = () => {
           console.log("match", data);
           setSession({
             otherUser: data.otherUser,
-            preferences: data.preferences
+            preferences: data.preferences,
+            expires: data.expires
           });
           break;
         case "cursor_move":
@@ -182,6 +185,32 @@ const Session = () => {
     }
   }, [preset]);
 
+  useEffect(() => {
+    if (session) {
+      console.log("session", session);
+      const intervalId = setInterval(() => {
+        const currentTime = new Date().getTime();
+        const expirationTime = new Date(session.expires).getTime();
+        const remainingTime = expirationTime - currentTime;
+
+        if (remainingTime <= 0) {
+          setExpiresIn("Expired");
+          setOver(true);
+          setSession(null);
+          clearInterval(intervalId);
+        } else {
+          const minutes = Math.floor(
+            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+          setExpiresIn(`${minutes}m ${seconds}s`);
+        }
+      }, 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [session]);
+
   return (
     <div
       style={{
@@ -196,7 +225,7 @@ const Session = () => {
       }}
     >
       <h1 style={{ fontSize: "2rem" }}>
-        {!unmatched && !session && "Searching for partner..."}
+        {!unmatched && !over && !session && "Searching for partner..."}
       </h1>
 
       {session && (
@@ -208,12 +237,34 @@ const Session = () => {
           }}
         >
           <i>You're sharing an experience with {session.otherUser}</i>
+          <br />
+          <i>Expires in {expiresIn}</i>
         </div>
       )}
 
-      {unmatched && (
+      {unmatched && !over && (
         <div>
           <p>Partner has left :(</p>
+          <button
+            onClick={() => window.history.back()}
+            style={{
+              padding: "0.5rem 1rem",
+              borderRadius: "4px",
+              border: "none",
+              background: "#007bff",
+              color: "white",
+              cursor: "pointer",
+              marginTop: "1rem"
+            }}
+          >
+            Start Over?
+          </button>
+        </div>
+      )}
+
+      {over && (
+        <div>
+          <p>Thanks for taking part :)</p>
           <button
             onClick={() => window.history.back()}
             style={{

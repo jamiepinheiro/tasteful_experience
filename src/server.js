@@ -14,6 +14,7 @@ class Session {
     this.user1 = user1;
     this.user2 = user2;
     this.active = true;
+    this.expires = Date.now() + 10000;
   }
 
   getOtherUser(user) {
@@ -34,22 +35,25 @@ function match_users() {
     const user1 = unmatched_users.pop();
     const user2 = unmatched_users.pop();
     const preferences = [user1.preferences, user2.preferences];
+    session = new Session(user1, user2);
+    sessions.push(session);
     user1.send(
       JSON.stringify({
         event: "match",
         otherUser: user2.name,
-        preferences: preferences
+        preferences: preferences,
+        expires: session.expires
       })
     );
     user2.send(
       JSON.stringify({
         event: "match",
         otherUser: user1.name,
-        preferences: preferences
+        preferences: preferences,
+        expires: session.expires
       })
     );
-    session = new Session(user1, user2);
-    sessions.push(session);
+
     user1.session = session;
     user2.session = session;
   }
