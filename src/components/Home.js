@@ -4,18 +4,38 @@ import OpenAI from "openai";
 
 const PromptApiKey = ({ onApiKeySubmit }) => {
   const [apiKey, setApiKey] = useState("");
+
   return (
-    <div>
-      <form onSubmit={e => onApiKeySubmit(apiKey)}>
-        <label>
-          Please enter your OpenAI API key:
+    <div style={{ textAlign: "center", margin: "2rem" }}>
+      <form onSubmit={e => onApiKeySubmit(apiKey)} style={{ margin: "1rem" }}>
+        <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          Please enter your OpenAI API key to use this app:
           <input
             type="text"
             value={apiKey}
             onChange={e => setApiKey(e.target.value)}
+            style={{
+              padding: "0.5rem",
+              margin: "0.5rem 0",
+              marginLeft: "1rem",
+              borderRadius: "4px",
+              border: "1px solid #ccc"
+            }}
           />
         </label>
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          style={{
+            padding: "0.5rem 1rem",
+            borderRadius: "4px",
+            border: "none",
+            background: "#007bff",
+            color: "#fff",
+            cursor: "pointer"
+          }}
+        >
+          Submit
+        </button>
       </form>
     </div>
   );

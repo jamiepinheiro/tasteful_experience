@@ -248,7 +248,7 @@ const Session = () => {
       }}
     >
       <h1 style={{ fontSize: "2rem", animation: "pulse 1s infinite" }}>
-        {!unmatched && !over && !session && "Searching for partner..."}
+        {!unmatched && !over && !session && "Searching for a partner..."}
       </h1>
 
       {session && (
