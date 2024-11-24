@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "./animations.css";
-
 const Session = () => {
   const [searchParams] = useSearchParams();
   const [session, setSession] = useState(null);
@@ -12,6 +11,7 @@ const Session = () => {
   const [expiresIn, setExpiresIn] = useState(null);
   const [over, setOver] = useState(false);
   const [apiKey, setApiKey] = useState(null);
+  const [showBackground, setShowBackground] = useState(false);
 
   const navigate = useNavigate();
   const WS_URL =
@@ -222,15 +222,20 @@ const Session = () => {
 
   return (
     <div
+      key={background}
+      id="background"
       style={{
+        opacity: background ? 1 : 0,
         backgroundImage: background,
+        transition: "opacity 2s ease-in-out",
         backgroundSize: "cover",
         backgroundPosition: "center top",
         backgroundRepeat: "no-repeat",
         height: "100vh",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        fontFamily: "cursive"
       }}
     >
       <h1 style={{ fontSize: "2rem", animation: "pulse 1s infinite" }}>
@@ -251,36 +256,26 @@ const Session = () => {
         </div>
       )}
 
-      {unmatched && !over && (
-        <div>
-          <p>Partner has left :(</p>
+      {(over || unmatched) && (
+        <div
+          id="over-modal"
+          style={{
+            transition: "opacity 2s ease-in-out",
+            padding: "20px",
+            borderRadius: "10px",
+            textAlign: "center",
+            fontSize: "1.5rem"
+          }}
+        >
+          {unmatched && <p>Partner has left :(</p>}
+          {over && <p>Thanks for taking part :)</p>}
           <button
             onClick={startOver}
             style={{
               padding: "0.5rem 1rem",
               borderRadius: "4px",
               border: "none",
-              background: "#007bff",
-              color: "white",
-              cursor: "pointer",
-              marginTop: "1rem"
-            }}
-          >
-            Start Over?
-          </button>
-        </div>
-      )}
-
-      {over && (
-        <div>
-          <p>Thanks for taking part :)</p>
-          <button
-            onClick={startOver}
-            style={{
-              padding: "0.5rem 1rem",
-              borderRadius: "4px",
-              border: "none",
-              background: "#007bff",
+              background: "#2e2e2e",
               color: "white",
               cursor: "pointer",
               marginTop: "1rem"
