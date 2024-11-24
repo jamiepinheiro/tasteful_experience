@@ -283,7 +283,7 @@ const Session = () => {
             fontSize: "1.5rem"
           }}
         >
-          {unmatched && !over && <p>Partner has left :(</p>}
+          {unmatched && !over && <p>Your partner has left :(</p>}
           {over && <p>Thanks for taking part :)</p>}
           <button
             onClick={startOver}
