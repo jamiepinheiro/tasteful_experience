@@ -33,14 +33,11 @@ const Home = () => {
   );
   const [openAI, setOpenAI] = useState(null);
   const messagesEndRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   useEffect(() => {
     if (apiKey) {
@@ -50,6 +47,56 @@ const Home = () => {
       setOpenAI(new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true }));
     }
   }, [apiKey]);
+
+  useEffect(() => {
+    scrollToBottom();
+    const checkIsMobile = () => {
+      setIsMobile(/Mobi|Android/i.test(navigator.userAgent));
+    };
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, [messages]);
+
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          color: "#FF6B6B",
+          textAlign: "center",
+          padding: "2rem",
+          backgroundColor: "#FFF5F5",
+          borderRadius: "8px",
+          margin: "2rem"
+        }}
+      >
+        <pre
+          style={{
+            fontFamily: "monospace",
+            fontSize: "30px",
+            lineHeight: "1.2",
+            color: "#666"
+          }}
+        >
+          {`
+ /\\_/\\
+ ( o.o )
+ > ^ <
+`}
+        </pre>
+        <p
+          style={{
+            fontSize: "1.2rem",
+            marginTop: "1rem",
+            fontWeight: "500"
+          }}
+        >
+          Sorry, this app is not supported on mobile devices, try again on a
+          desktop!
+        </p>
+      </div>
+    );
+  }
 
   if (!apiKey) {
     return <PromptApiKey onApiKeySubmit={setApiKey} />;
