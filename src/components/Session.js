@@ -4,14 +4,10 @@ import { useSearchParams } from "react-router-dom";
 
 const Session = () => {
   const [searchParams] = useSearchParams();
-  const [otherUser, setOtherUser] = useState(null);
+  const [session, setSession] = useState(null);
   const [unmatched, setUnmatched] = useState(false);
-  const preferences = Object.fromEntries(searchParams.entries());
-
-  // Parse the preferences JSON if it exists
-  console.log("preferences", preferences);
-
   const WS_URL =
+    process.env.REACT_APP_WS_URL ||
     "wss://tasteful-experience-server-pzsdi.ondigitalocean.app:443";
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
@@ -23,6 +19,11 @@ const Session = () => {
   );
 
   useEffect(() => {
+    if (readyState === 1) {
+      const preferences = Object.fromEntries(searchParams.entries());
+      console.log("preferences", preferences);
+      sendJsonMessage({ event: "set_preferences", preferences });
+    }
     document.onmousemove = e => {
       const { clientX, clientY } = e;
       const cursorPosition = {
@@ -45,7 +46,7 @@ const Session = () => {
       let data = lastJsonMessage;
       switch (data.event) {
         case "match":
-          setOtherUser(data.id);
+          setSession({ otherUser: data.id, preferences: data.preferences });
           break;
         case "cursor_move":
           removePreviousCursor();
@@ -65,7 +66,7 @@ const Session = () => {
           break;
         case "unmatched":
           removePreviousCursor();
-          setOtherUser(null);
+          setSession(null);
           setUnmatched(true);
           break;
         default:
@@ -76,21 +77,22 @@ const Session = () => {
   }, [lastJsonMessage]);
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh"
-        }}
-      >
-        <h1 style={{ fontSize: "2rem" }}>
-          {!unmatched && !otherUser && "Searching for partner..."}
-          {otherUser && `Sharing an experience with User ${otherUser}`}
-          {unmatched && "Partner has left :("}
-        </h1>
-      </div>
+    <div
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL}/img/bookstore.svg)`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <h1 style={{ fontSize: "2rem" }}>
+        {!unmatched && !session && "Searching for partner..."}
+        {session && `Sharing an experience with User ${session.otherUser}.`}
+        {unmatched && "Partner has left :("}
+      </h1>
     </div>
   );
 };

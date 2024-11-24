@@ -1,0 +1,39 @@
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_13_260)">
+<rect width="1440" height="1024" fill="white"/>
+<rect x="140.5" y="-18.5" width="1124" height="863" stroke="black"/>
+<rect x="814.5" y="86.5" width="377" height="525" stroke="black" stroke-opacity="0.4" stroke-width="3"/>
+<rect x="828.5" y="99.5" width="348" height="475" stroke="black"/>
+<rect x="814.5" y="86.5" width="377" height="253" stroke="black" stroke-opacity="0.4" stroke-width="3"/>
+<path d="M792 584.5H1221V607.5L1202 650H758V626.5L792 584.5Z" fill="#D9D9D9"/>
+<path d="M1221 584.5H792L758 626.5M1221 584.5L1202 626.5M1221 584.5V607.5L1202 650M1202 626.5H758M1202 626.5V650M758 626.5V650H1202" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<rect x="140" y="2" width="561" height="841" stroke="black" stroke-opacity="0.3" stroke-width="4"/>
+<rect x="138" y="155" width="565" height="11" fill="black" fill-opacity="0.2"/>
+<rect x="139" y="156" width="563" height="9" stroke="black" stroke-opacity="0.4" stroke-width="2"/>
+<rect x="138" y="334" width="565" height="11" fill="black" fill-opacity="0.2"/>
+<rect x="139" y="335" width="563" height="9" stroke="black" stroke-opacity="0.4" stroke-width="2"/>
+<rect x="138" y="505" width="565" height="11" fill="black" fill-opacity="0.2"/>
+<rect x="139" y="506" width="563" height="9" stroke="black" stroke-opacity="0.4" stroke-width="2"/>
+<rect x="138" y="684" width="565" height="11" fill="black" fill-opacity="0.2"/>
+<rect x="139" y="685" width="563" height="9" stroke="black" stroke-opacity="0.4" stroke-width="2"/>
+<path d="M138 168.5V160L-3 212V222.5L138 168.5Z" fill="#D9D9D9" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M141 347.5V339L0 391V401.5L141 347.5Z" fill="#D9D9D9" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M138 518.5V510L-3 562V572.5L138 518.5Z" fill="#D9D9D9" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M140 697.5V689L-1 741V751.5L140 697.5Z" fill="#D9D9D9" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M29 213V333M29 333H141M29 333L3 341" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M30.5 393V508M30.5 508H135M30.5 508L-3 516" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M30.5 563.5V687M30.5 687H135M30.5 687L-3 695" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M30.5 743V843.5M30.5 843.5H135M30.5 843.5L-3.5 861.5" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M74.9999 557L350.5 527.5C391.974 597.343 407.062 639.267 379.5 732.5V751.5C459.59 758.124 497.113 774.322 555 818.5C566.46 842.588 567.36 859.193 553.5 897.5C435.841 940.928 363.882 953.469 228 961L59.4999 921.5V792.5V761.5C47.1454 644.217 31.9443 561.639 74.9999 557Z" fill="#D9D9D9"/>
+<path d="M74.9999 557L350.5 527.5C391.974 597.343 407.062 639.267 379.5 732.5M74.9999 557C116.28 627.052 127.019 670.236 101 761.5M74.9999 557C31.9443 561.639 47.1454 644.217 59.4999 761.5M379.5 732.5L101 761.5M379.5 732.5V751.5M101 761.5H59.4999M101 761.5V792.5H59.4999M59.4999 761.5V792.5M59.4999 792.5V921.5L228 961M379.5 751.5L101 803C177.301 834.313 208.307 855.797 228 906M379.5 751.5C459.59 758.124 497.113 774.322 555 818.5M555 818.5C453.302 875.509 386.354 898.75 228 906M555 818.5C566.46 842.588 567.36 859.193 553.5 897.5C435.841 940.928 363.882 953.469 228 961M228 906V961" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<path d="M493 1002.5V909C595.135 918.985 652.692 918.49 756 905V1002.5C653.283 1020.57 595.717 1020.66 493 1002.5Z" fill="#D9D9D9" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+<ellipse cx="620" cy="862" rx="199" ry="90" fill="#D9D9D9"/>
+<path d="M817.5 862C817.5 885.899 796.011 908.03 760.096 924.273C724.32 940.453 674.79 950.5 620 950.5C565.21 950.5 515.68 940.453 479.904 924.273C443.989 908.03 422.5 885.899 422.5 862C422.5 838.101 443.989 815.97 479.904 799.727C515.68 783.547 565.21 773.5 620 773.5C674.79 773.5 724.32 783.547 760.096 799.727C796.011 815.97 817.5 838.101 817.5 862Z" stroke="black" stroke-opacity="0.4" stroke-width="3"/>
+<path d="M605 804.5L495 858L642 898.5L743.5 836.5L605 804.5Z" fill="black" fill-opacity="0.2" stroke="black" stroke-opacity="0.2" stroke-width="6"/>
+</g>
+<defs>
+<clipPath id="clip0_13_260">
+<rect width="1440" height="1024" fill="white"/>
+</clipPath>
+</defs>
+</svg>

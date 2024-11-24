@@ -33,8 +33,13 @@ function match_users() {
   if (unmatched_users.length > 1) {
     const user1 = unmatched_users.pop();
     const user2 = unmatched_users.pop();
-    user1.send(JSON.stringify({ event: "match", id: user2.id }));
-    user2.send(JSON.stringify({ event: "match", id: user1.id }));
+    const preferences = [user1.preferences, user2.preferences];
+    user1.send(
+      JSON.stringify({ event: "match", id: user2.id, preferences: preferences })
+    );
+    user2.send(
+      JSON.stringify({ event: "match", id: user1.id, preferences: preferences })
+    );
     session = new Session(user1, user2);
     sessions.push(session);
     user1.session = session;
@@ -47,8 +52,6 @@ let nextId = 0;
 wss.on("connection", ws => {
   ws.id = nextId++;
 
-  unmatched_users.push(ws);
-  match_users();
   console.log("User connected", ws.id);
 
   ws.on("message", message => {
@@ -62,6 +65,11 @@ wss.on("connection", ws => {
             JSON.stringify({ event: "cursor_move", cursor: data.cursor })
           );
         }
+        break;
+      case "set_preferences":
+        ws.preferences = data.preferences;
+        unmatched_users.push(ws);
+        match_users();
         break;
     }
   });
