@@ -29,7 +29,7 @@ const PromptApiKey = ({ onApiKeySubmit }) => {
             padding: "0.5rem 1rem",
             borderRadius: "4px",
             border: "none",
-            background: "#007bff",
+            background: "#2e2e2e",
             color: "#fff",
             cursor: "pointer"
           }}
