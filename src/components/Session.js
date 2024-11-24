@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const Session = () => {
   const [searchParams] = useSearchParams();
@@ -10,7 +10,9 @@ const Session = () => {
   const [background, setBackground] = useState(null);
   const [expiresIn, setExpiresIn] = useState(null);
   const [over, setOver] = useState(false);
+  const [apiKey, setApiKey] = useState(null);
 
+  const navigate = useNavigate();
   const WS_URL =
     process.env.REACT_APP_WS_URL ||
     "wss://tasteful-experience-server-pzsdi.ondigitalocean.app:443";
@@ -26,6 +28,7 @@ const Session = () => {
   useEffect(() => {
     if (readyState === 1) {
       const params = Object.fromEntries(searchParams.entries());
+      setApiKey(params.apiKey);
       console.log("params", params);
       sendJsonMessage({
         event: "set_preferences",
@@ -149,7 +152,7 @@ const Session = () => {
       let preset = findBestMatch(
         session.preferences[0],
         session.preferences[1],
-        Object.keys(session.preferences[0])
+        ["vibe", "inspiration", "flavor"]
       );
       setPreset(preset);
     } else {
@@ -246,7 +249,7 @@ const Session = () => {
         <div>
           <p>Partner has left :(</p>
           <button
-            onClick={() => window.history.back()}
+            onClick={() => navigate("/?" + new URLSearchParams({ apiKey }))}
             style={{
               padding: "0.5rem 1rem",
               borderRadius: "4px",
@@ -266,7 +269,7 @@ const Session = () => {
         <div>
           <p>Thanks for taking part :)</p>
           <button
-            onClick={() => window.history.back()}
+            onClick={() => navigate("/?" + new URLSearchParams({ apiKey }))}
             style={{
               padding: "0.5rem 1rem",
               borderRadius: "4px",

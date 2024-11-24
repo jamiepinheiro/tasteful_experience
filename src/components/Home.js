@@ -88,7 +88,10 @@ const Home = () => {
       if (messages.length > 1) {
         const preferences = JSON.parse(messages[1]);
         setTimeout(
-          () => navigate("/session?" + new URLSearchParams(preferences)),
+          () =>
+            navigate(
+              "/session?" + new URLSearchParams({ apiKey, ...preferences })
+            ),
           3000
         );
       }
