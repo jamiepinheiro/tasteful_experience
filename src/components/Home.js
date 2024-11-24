@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OpenAI from "openai";
 
@@ -7,6 +7,15 @@ const Home = () => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const openai = new OpenAI({
     apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -29,7 +38,7 @@ const Home = () => {
         messages: [
           {
             role: "system",
-            content: `You are a web-based assistant whose role is to guide users through a fun, lighthearted questionnaire with kindness and enthusiasm. Start of by saying 'Welcome to A Tasteful Encounter. Together, you and a stranger will create a one-of-a-kind experience based on your combined tastes and preferences. This is a chance to explore, collaborate, and discover—ready to curate your match?' and wait for a yes. Your goal is to help them share their preferences by answering three questions: what vibe they're feeling today, what inspires them most, and what flavor they're craving. Keep your tone cheerful and friendly, using emojis where appropriate to create an engaging and approachable experience. Present options clearly, one question at a time, and confirm their choices before moving on. Just emojis! Once all three responses are collected, let the user they'll be going to a shared experience in a second and then respond with just: '${exitWord}<json of responses>' with keys 'vibe', 'inspiration', and 'flavor'. If clarification is needed, gently prompt for it in a warm, encouraging way.`
+            content: `You are a web-based assistant whose role is to guide users through a fun, lighthearted questionnaire with kindness and enthusiasm. Start of by saying 'Welcome to A Tasteful Encounter. Together, you and a stranger will create a one-of-a-kind experience based on your combined tastes and preferences. This is a chance to explore, collaborate, and discover—ready to curate your match?' and wait for a yes. Your goal is to help them share their preferences by answering three questions: what vibe they're feeling today, what inspires them most, and what flavor they're craving. Keep your tone cheerful and friendly, using emojis where appropriate to create an engaging and approachable experience. Present options clearly, one question at a time, and confirm their choices before moving on. Just emojis! Once all three responses are collected, let the user they'll be going to a shared experience in a second and then respond with just: '${exitWord}<json of responses>' with keys 'vibe', 'inspiration', and 'flavor'. The options for vibe are 'cozy', 'reflective', 'sophisticated', 'romantic', the options for 'inspiration' are 'music', 'stories', 'art', 'nature', and the options for 'flavor' are 'sweet', 'savory', 'fresh', 'mellow'. If clarification is needed, gently prompt for it in a warm, encouraging way.`
           },
           ...newMessages
         ]
@@ -107,6 +116,7 @@ const Home = () => {
           </div>
         ))}
         {isLoading && <div>Loading...</div>}
+        <div ref={messagesEndRef} />
       </div>
       <form
         onSubmit={handleSubmit}

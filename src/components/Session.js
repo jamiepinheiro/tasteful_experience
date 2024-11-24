@@ -6,6 +6,9 @@ const Session = () => {
   const [searchParams] = useSearchParams();
   const [session, setSession] = useState(null);
   const [unmatched, setUnmatched] = useState(false);
+  const [preset, setPreset] = useState(null);
+  const [background, setBackground] = useState(null);
+
   const WS_URL =
     process.env.REACT_APP_WS_URL ||
     "wss://tasteful-experience-server-pzsdi.ondigitalocean.app:443";
@@ -76,13 +79,83 @@ const Session = () => {
     }
   }, [lastJsonMessage]);
 
+  useEffect(() => {
+    if (session) {
+      // Define the mapping for each output
+      const outputs = {
+        vinyl_cafe: {
+          vibe: ["cozy"],
+          inspiration: ["music"],
+          flavor: ["sweet", "mellow"]
+        },
+        fresh_garden: {
+          vibe: ["reflective", "playful"],
+          inspiration: ["nature"],
+          flavor: ["fresh"]
+        },
+        bookstore: {
+          vibe: ["reflective", "cozy"],
+          inspiration: ["stories"],
+          flavor: ["mellow"]
+        },
+        city_skyline: {
+          vibe: ["sophisticated"],
+          inspiration: ["food", "music"],
+          flavor: ["sweet", "savoury"]
+        }
+      };
+
+      function calculateScore(userA, userB, criteria) {
+        let score = 0;
+
+        for (const key in criteria) {
+          const sharedValues = criteria[key].filter(
+            value => userA[key] === value || userB[key] === value
+          );
+          score += sharedValues.length;
+        }
+        return score;
+      }
+
+      function findBestMatch(userA, userB) {
+        let bestMatch = null;
+        let highestScore = 0;
+
+        for (const output in outputs) {
+          const score = calculateScore(userA, userB, outputs[output]);
+          if (score > highestScore) {
+            highestScore = score;
+            bestMatch = output;
+          }
+        }
+
+        return bestMatch;
+      }
+      let preset = findBestMatch(
+        session.preferences[0],
+        session.preferences[1],
+        Object.keys(session.preferences[0])
+      );
+      setPreset(preset);
+    } else {
+      setPreset(null);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (preset) {
+      setBackground(`url(${process.env.PUBLIC_URL}/img/${preset}.svg)`);
+    } else {
+      setBackground("none");
+    }
+  }, [preset]);
+
   return (
     <div
       style={{
-        backgroundImage: session
-          ? `url(${process.env.PUBLIC_URL}/img/bookstore.svg)`
-          : "none",
+        backgroundImage: background,
         backgroundSize: "cover",
+        backgroundPosition: "center top",
         backgroundRepeat: "no-repeat",
         height: "100vh",
         display: "flex",
@@ -92,9 +165,20 @@ const Session = () => {
     >
       <h1 style={{ fontSize: "2rem" }}>
         {!unmatched && !session && "Searching for partner..."}
-        {session && `Sharing an experience with User ${session.otherUser}.`}
         {unmatched && "Partner has left :("}
       </h1>
+
+      {session && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px"
+          }}
+        >
+          <i>Sharing an experience with User {session.otherUser}</i>
+        </div>
+      )}
     </div>
   );
 };
