@@ -79,7 +79,9 @@ const Session = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${process.env.PUBLIC_URL}/img/bookstore.svg)`,
+        backgroundImage: session
+          ? `url(${process.env.PUBLIC_URL}/img/bookstore.svg)`
+          : "none",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         height: "100vh",
