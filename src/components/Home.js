@@ -44,6 +44,9 @@ const Home = () => {
 
   useEffect(() => {
     if (apiKey) {
+      const url = new URL(window.location);
+      url.searchParams.set("apiKey", apiKey);
+      window.history.replaceState({}, "", url);
       setOpenAI(new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true }));
     }
   }, [apiKey]);

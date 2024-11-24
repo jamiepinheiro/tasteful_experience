@@ -198,7 +198,7 @@ const Session = () => {
         <div>
           <p>Partner has left :(</p>
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => window.history.back()}
             style={{
               padding: "0.5rem 1rem",
               borderRadius: "4px",
