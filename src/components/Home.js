@@ -2,11 +2,34 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OpenAI from "openai";
 
+const PromptApiKey = ({ onApiKeySubmit }) => {
+  const [apiKey, setApiKey] = useState("");
+  return (
+    <div>
+      <form onSubmit={e => onApiKeySubmit(apiKey)}>
+        <label>
+          Please enter your OpenAI API key:
+          <input
+            type="text"
+            value={apiKey}
+            onChange={e => setApiKey(e.target.value)}
+          />
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [apiKey, setApiKey] = useState(
+    process.env.REACT_APP_OPENAI_API_KEY || null
+  );
+  const [openAI, setOpenAI] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -17,10 +40,15 @@ const Home = () => {
     scrollToBottom();
   }, [messages]);
 
-  const openai = new OpenAI({
-    apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true
-  });
+  useEffect(() => {
+    if (apiKey) {
+      setOpenAI(new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true }));
+    }
+  }, [apiKey]);
+
+  if (!apiKey) {
+    return <PromptApiKey onApiKeySubmit={setApiKey} />;
+  }
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -33,7 +61,7 @@ const Home = () => {
 
     try {
       const exitWord = "COMPLETE:";
-      const response = await openai.chat.completions.create({
+      const response = await openAI.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
           {
