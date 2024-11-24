@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import "./animations.css";
 
 const Session = () => {
   const [searchParams] = useSearchParams();
@@ -232,7 +233,7 @@ const Session = () => {
         alignItems: "center"
       }}
     >
-      <h1 style={{ fontSize: "2rem" }}>
+      <h1 style={{ fontSize: "2rem", animation: "pulse 1s infinite" }}>
         {!unmatched && !over && !session && "Searching for partner..."}
       </h1>
 
